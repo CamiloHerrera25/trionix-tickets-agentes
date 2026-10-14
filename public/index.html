@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trionix Labs · Mesa de soporte</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="masthead__brand">
+      <span class="masthead__emblem">TX</span>
+      <div class="masthead__title">
+        <h1>Trionix Labs</h1>
+        <p>Mesa de soporte técnico</p>
+      </div>
+    </div>
+    <dl class="masthead__stats" id="stats">
+      <div class="masthead__stat">
+        <dt>Total</dt>
+        <dd id="statTotal">0</dd>
+      </div>
+      <div class="masthead__stat">
+        <dt>Abiertos</dt>
+        <dd id="statAbiertos">0</dd>
+      </div>
+      <div class="masthead__stat">
+        <dt>Resueltos</dt>
+        <dd id="statResueltos">0</dd>
+      </div>
+      <div class="masthead__stat">
+        <dt>Agentes</dt>
+        <dd id="statAgentes">0</dd>
+      </div>
+    </dl>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab-btn is-active" data-tab="tickets">Tickets</button>
+    <button class="tab-btn" data-tab="agentes">Agentes</button>
+  </nav>
+
+  <!-- ============== VISTA: TICKETS ============== -->
+  <main class="layout" id="vistaTickets">
+
+    <section class="panel form-panel">
+      <h2>Nuevo pase de servicio</h2>
+      <form id="formularioTicket" novalidate>
+        <div class="field">
+          <label for="cliente">Cliente</label>
+          <input type="text" id="cliente" name="cliente" placeholder="Nombre de la empresa" autocomplete="off" />
+        </div>
+
+        <div class="field">
+          <label for="asunto">Descripción del caso</label>
+          <textarea id="asunto" name="asunto" rows="4" placeholder="¿Qué reporta el cliente?"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="prioridad">Prioridad</label>
+          <select id="prioridad" name="prioridad">
+            <option value="baja">Baja</option>
+            <option value="media" selected>Media</option>
+            <option value="alta">Alta</option>
+          </select>
+        </div>
+
+        <div class="form-error" id="formErrorTicket" role="alert"></div>
+
+        <button type="submit" class="btn btn--primary btn--block" id="btnSubmitTicket">
+          Registrar pase
+        </button>
+      </form>
+    </section>
+
+    <section class="panel list-panel">
+      <div class="list-panel__header">
+        <h2>Tickets registrados</h2>
+        <div class="filters" id="filters">
+          <button class="filter-btn is-active" data-filtro="todos">Todos</button>
+          <button class="filter-btn" data-filtro="abierto">Abiertos</button>
+          <button class="filter-btn" data-filtro="resuelto">Resueltos</button>
+          <span class="filters__divider"></span>
+          <button class="filter-btn" data-prioridad="baja">Baja</button>
+          <button class="filter-btn" data-prioridad="media">Media</button>
+          <button class="filter-btn" data-prioridad="alta">Alta</button>
+        </div>
+      </div>
+
+      <div id="toast" class="toast" role="alert"></div>
+
+      <div id="listaTickets" class="stub-list"></div>
+
+      <div id="emptyState" class="empty-state" hidden>
+        <p>Sin pases pendientes con este filtro.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============== VISTA: AGENTES ============== -->
+  <main class="layout" id="vistaAgentes" hidden>
+
+    <section class="panel form-panel">
+      <h2>Nuevo agente</h2>
+      <form id="formularioAgente" novalidate>
+        <div class="field">
+          <label for="agenteNombre">Nombre</label>
+          <input type="text" id="agenteNombre" name="nombre" placeholder="Nombre completo" autocomplete="off" />
+        </div>
+
+        <div class="field">
+          <label for="agenteEmail">Correo</label>
+          <input type="email" id="agenteEmail" name="email" placeholder="nombre@trionixlabs.com" autocomplete="off" />
+        </div>
+
+        <div class="field">
+          <label for="agenteEspecialidad">Especialidad</label>
+          <select id="agenteEspecialidad" name="especialidad">
+            <option value="redes">Redes</option>
+            <option value="software" selected>Software</option>
+            <option value="hardware">Hardware</option>
+            <option value="general">General</option>
+          </select>
+        </div>
+
+        <div class="form-error" id="formErrorAgente" role="alert"></div>
+
+        <button type="submit" class="btn btn--primary btn--block" id="btnSubmitAgente">
+          Registrar agente
+        </button>
+      </form>
+    </section>
+
+    <section class="panel list-panel">
+      <div class="list-panel__header">
+        <h2>Agentes de soporte</h2>
+      </div>
+
+      <div id="toastAgentes" class="toast" role="alert"></div>
+
+      <div id="listaAgentes" class="agent-list"></div>
+
+      <div id="emptyStateAgentes" class="empty-state" hidden>
+        <p>Aún no hay agentes registrados.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <template id="ticketTemplate">
+    <article class="stub" data-id="">
+      <div class="stub__tab"></div>
+      <div class="stub__body">
+        <div class="stub__row">
+          <span class="stub__number"></span>
+          <span class="stub__estado"></span>
+        </div>
+        <h3 class="stub__cliente"></h3>
+        <p class="stub__asunto"></p>
+
+        <div class="stub__asignacion">
+          <span class="stub__agente-label"></span>
+          <select class="stub__select-agente">
+            <option value="">Sin asignar</option>
+          </select>
+        </div>
+
+        <div class="stub__actions">
+          <button class="btn btn--resolver">Marcar como resuelto</button>
+          <button class="btn btn--eliminar" title="Eliminar ticket">Eliminar</button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <template id="agenteTemplate">
+    <article class="agent-card" data-id="">
+      <div class="agent-card__top">
+        <span class="badge badge--especialidad"></span>
+        <span class="badge badge--activo"></span>
+      </div>
+      <h3 class="agent-card__nombre"></h3>
+      <p class="agent-card__email"></p>
+      <div class="agent-card__actions">
+        <button class="btn btn--eliminar-agente" title="Eliminar agente">Eliminar</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>

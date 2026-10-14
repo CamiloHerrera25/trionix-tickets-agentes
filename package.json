@@ -1,0 +1,22 @@
+{
+  "name": "trionix-tickets-agentes",
+  "version": "1.0.0",
+  "description": "Trionix Tickets: Sistema de Soporte con Agentes - Parcial Segundo Corte",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "seed": "node seed.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "joi": "^18.2.5",
+    "mongoose": "^8.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
