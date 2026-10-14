@@ -40,8 +40,7 @@ API REST en Express para gestionar tickets de soporte técnico de Trionix Labs y
 
 ## URL pública donde queda desplegado
 
-> _(completar con la URL real una vez desplegado, por ejemplo en Render o Railway)_
-> `https://________________.onrender.com`
+> `https://trionix-tickets-agentes-jk0t.onrender.com`
 
 ## Variables de entorno necesarias
 
